@@ -1,7 +1,7 @@
 name 					= "Lamp Post without alloy"
 description 			= "Configurable Hamlet lamp post"
 author					= "Mentalistpro and CrazyCat"
-version 				= "1.2"
+version 				= "1.3"
 api_version 			= 10
 
 dst_compatible 			= true
