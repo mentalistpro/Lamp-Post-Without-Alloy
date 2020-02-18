@@ -91,51 +91,44 @@ local function updateaura(inst)
 	if inst.lightstate == "orange" then
 		inst.Light:SetColour(1,.65,0)
 		--//It's about laziness
-		--AuraNoHunger
-		--AuraSpeed
-		--inst.Light:SetIntensity(0.8)
-		--inst.components.sanityaura.aura = TUNING.SANITYAURA_TINY		
-	end
-	
-	if inst.lightstate == "yellow" then
+		--AuraNoHungerCost
+		inst.Light:SetIntensity(0.8)
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+		
+	elseif inst.lightstate == "green" then
+		inst.Light:SetColour(.5,1,0)
+		--//It's about perfection
+		--AuraNoHalthCost
+		inst.Light:SetIntensity(0.8)
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+
+	elseif inst.lightstate == "yellow" then
 		inst.Light:SetColour(1,1,0)
 		--//It's about heaven
 		--AuraHeal
-		--AuraSpeed
-		--inst.Light:SetIntensity(0.8)
-		--inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
-	end
-
-	if inst.lightstate == "green" then
-		inst.Light:SetColour(.5,1,0)
-		--//It's about perfection
-		--AuraD
-		--inst.Light:SetIntensity(0.8)
-		--inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
-	end
-
-	if inst.lightstate == "purple" then
+		inst.Light:SetIntensity(0.8)
+		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+		
+	elseif inst.lightstate == "purple" then
 		inst.Light:SetColour(.6,.5,.9)
-		--it's about chaos
-		--Attack x2
-		--Attack Speed x2
-		--Attack calls thunder
-		--Insanity
-	end
-	
-	--//END
-	--//In future, white only affects color and intensity; black might involve attack buff.
-	
-
-	if inst.lightstate == "white" then
-		inst.Light:SetColour(1,1,1)
-		inst.components.sanityaura.aura = TUNING.SANITYAURA_TINY
+		--//It's about chaos
+		--AuraAttackSummonsThunder
+		inst.Light:SetIntensity(0.8)
+		inst.components.sanityaura.aura = -TUNING.SANITYAURA_TINY
+	--//TODO: END
 	elseif inst.lightstate == "black" then
 		inst.Light:SetColour(.5,.5,.5)
-		inst.components.sanityaura.aura = -TUNING.SANITYAURA_TINY
-	else
+		inst.Light:SetIntensity(0.8)
 		inst.components.sanityaura.aura = 0
-	end
+		
+	elseif inst.lightstate == "white" then
+		inst.Light:SetColour(1,1,1)
+		inst.Light:SetIntensity(0.8)
+		inst.components.sanityaura.aura = 0	
+	
+	else
+		inst.Light:SetIntensity(0.6)
+		inst.components.sanityaura.aura = 0	
 	
 	if inst.lightstate == "default" then
 		inst.Light:SetColour(197/255, 197/255, 10/255)
