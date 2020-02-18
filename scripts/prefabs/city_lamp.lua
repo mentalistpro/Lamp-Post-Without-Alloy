@@ -77,10 +77,12 @@ end
 local function updateaura(inst)
 	if inst.lightstate == "red" then
 		inst.Light:SetColour(.85,.35,.5)
+		inst.Light:SetIntensity(0.8)
 		inst.components.heater.heat = 30
 		inst.components.heater:SetThermics(true, false)
 	elseif inst.lightstate == "blue" then
-		inst.Light:SetColour(.4,.7,1)
+		inst.Light:SetColour(.4,1,1)
+		inst.Light:SetIntensity(0.8)
 		inst.components.heater.heat = -30
 		inst.components.heater:SetThermics(false, true)
 	else
@@ -110,7 +112,7 @@ local function updateaura(inst)
 		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
 		
 	elseif inst.lightstate == "purple" then
-		inst.Light:SetColour(.6,.5,.9)
+		inst.Light:SetColour(.9,.2,.8)
 		--//It's about chaos
 		--AuraAttackSummonsThunder
 		inst.Light:SetIntensity(0.8)
@@ -129,6 +131,7 @@ local function updateaura(inst)
 	else
 		inst.Light:SetIntensity(0.6)
 		inst.components.sanityaura.aura = 0	
+	end
 	
 	if inst.lightstate == "default" then
 		inst.Light:SetColour(197/255, 197/255, 10/255)
