@@ -1,4 +1,3 @@
---List of prefabs and image assets in this mod. 
 PrefabFiles = 
 {
 	"city_lamp"
@@ -17,6 +16,7 @@ AddMinimapAtlas("images/inventoryimages/city_lamp.xml")
 --1. Configs
 --2. Recipes
 --3. Strings
+--4. Containers.lua
 
 ------------------------------------------------------------------------------------
 --1. Configs
@@ -66,11 +66,11 @@ AddRecipe(
 
 local _S = _G.STRINGS
 
-if _S.CHARACTERS.WALANI == nil then 	_S.CHARACTERS.WALANI = { DESCRIBE = {},} end -- DLC002
-if _S.CHARACTERS.WARBUCKS == nil then 	_S.CHARACTERS.WARBUCKS = { DESCRIBE = {},} end -- DLC003
-if _S.CHARACTERS.WHEELER == nil then 	_S.CHARACTERS.WHEELER = { DESCRIBE = {},} end -- DLC003
-if _S.CHARACTERS.WILBA == nil then 		_S.CHARACTERS.WILBA = { DESCRIBE = {},} end -- DLC003
-if _S.CHARACTERS.WOODLEGS == nil then 	_S.CHARACTERS.WOODLEGS = { DESCRIBE = {},} end -- DLC002
+if _S.CHARACTERS.WALANI == nil		then _S.CHARACTERS.WALANI = { DESCRIBE = {},} end -- DLC002
+if _S.CHARACTERS.WARBUCKS == nil 	then _S.CHARACTERS.WARBUCKS = { DESCRIBE = {},} end -- DLC003
+if _S.CHARACTERS.WHEELER == nil 	then _S.CHARACTERS.WHEELER = { DESCRIBE = {},} end -- DLC003
+if _S.CHARACTERS.WILBA == nil 		then _S.CHARACTERS.WILBA = { DESCRIBE = {},} end -- DLC003
+if _S.CHARACTERS.WOODLEGS == nil 	then _S.CHARACTERS.WOODLEGS = { DESCRIBE = {},} end -- DLC002
 
 _S.NAMES.CITY_LAMP = "Lamp Post"
 _S.RECIPE_DESC.CITY_LAMP = "I can't believe I can make this."
@@ -97,3 +97,60 @@ _S.CHARACTERS.WX78.DESCRIBE.CITY_LAMP 			= { GENERIC = "PRIMITIVE SOURCE OF ILLU
 _S.CHARACTERS.WORTOX.DESCRIBE.CITY_LAMP 		= { GENERIC = "It makes light out of nowhere!", ON = "Night is now hilarious, heehee!",}
 _S.CHARACTERS.WURT.DESCRIBE.CITY_LAMP 			= { GENERIC = "Big science glowy!", ON = "No more scary night lady, flort!",}
 
+
+------------------------------------------------------------------------------------
+--4. Containers.lua
+
+local containers = _G.require "containers"
+local Vector3 = _G.Vector3
+local modparams = {}
+
+modparams.oneslotter = {
+	widget = {
+		slotpos = {},
+		animbank = " ",
+		animbuild = "ui_chest_3x3",
+		pos = Vector3(0, 100, 0),
+		side_align_tip = 160,
+	},
+	acceptsstacks = false,
+	type = "chest",
+}
+
+function modparams.oneslotter.itemtestfn(container, item, slot)
+	return 	(
+				item.prefab == "red_cap"        or item.prefab == "thulecite_pieces" or 
+				item.prefab == "honey"      	or item.prefab == "green_cap"        or
+				item.prefab == "blue_cap"       or item.prefab == "spidergland"      or
+				item.prefab == "nightmarefuel"  or item.prefab == "lightbulb"		 or
+
+				item.prefab == "redgem"        	or item.prefab == "orangegem" 		 or 
+				item.prefab == "yellowgem"     	or item.prefab == "greengem"         or
+				item.prefab == "bluegem"        or item.prefab == "purplegem"		 or
+				item.prefab == "goldnugget"
+			)
+end
+
+table.insert(modparams.oneslotter.widget.slotpos, Vector3(0, 0, 0))
+
+for k, v in pairs(modparams) do
+	containers.MAXITEMSLOTS = math.max(containers.MAXITEMSLOTS, v.widget.slotpos ~= nil and #v.widget.slotpos or 0)
+end
+
+local old_wsetup = containers.widgetsetup
+function containers.widgetsetup(container, prefab, data)
+	if modparams[prefab or container.inst.prefab] and not data then
+		data = modparams[prefab or container.inst.prefab]
+	end
+	old_wsetup(container, prefab, data)
+end
+
+AddClassPostConstruct("widgets/containerwidget", function(self)
+	local old_open = self.Open
+	self.Open = function(self, container, doer)
+		old_open(self, container, doer)
+		if container.prefab == "oneslotter" then
+			self.bganim:SetScale(0.35, 0.35, 0.35)
+		end
+	end
+end)

@@ -2,7 +2,8 @@ local assets =
 {
     Asset("ANIM", "anim/lamp_post2.zip"),
     Asset("ANIM", "anim/lamp_post2_city_build.zip"),    
-    Asset("ANIM", "anim/lamp_post2_yotp_build.zip")
+    Asset("ANIM", "anim/lamp_post2_yotp_build.zip"),
+	Asset("ANIM", "anim/ui_chest_3x3.zip"),
 }
 
 local INTENSITY = 0.6
@@ -145,41 +146,32 @@ local function updateaura(inst)
 end
 
 -----------------------------------------------------------------------------------------------------------------
---3. Trades
+--3. Container
 
---//TODO: Replace giver component with container component
+--//TODO: Replace giver component with container component -- detect item change in container which triggers function or event pushed
 
-local function ShouldAcceptItem(inst, item)
-    return inst.lighton and 
-	(
-		item.prefab == "red_cap"        or item.prefab == "thulecite_pieces" or 
-        item.prefab == "honey"      	or item.prefab == "green_cap"        or
-        item.prefab == "blue_cap"       or item.prefab == "spidergland"      or
-        item.prefab == "nightmarefuel"  or item.prefab == "lightbulb"		 or
-		item.prefab == "goldnugget"
-	)
-end
-
-local function OnGetItemFromPlayer(inst, giver, item)
-    if item.prefab == "red_cap" then
+local function OnLightChange(inst, item)
+	local items = inst.components.container:GetItems()
+	if item.prefab == "red_cap" or item.prefab == "redgem" then
 		inst.lightstate = "red"
-    elseif item.prefab == "thulecite_pieces" then
+	elseif item.prefab == "thulecite_pieces" or item.prefab == "orangegem" then
 		inst.lightstate = "orange"
-    elseif item.prefab == "honey" then
+	elseif item.prefab == "honey" or item.prefab == "yellowgem" then
 		inst.lightstate = "yellow"
-    elseif item.prefab == "green_cap" then
+	elseif item.prefab == "green_cap" or item.prefab == "greengem" then
 		inst.lightstate = "green"
-    elseif item.prefab == "blue_cap" then
+	elseif item.prefab == "blue_cap" or item.prefab == "bluegem" then
 		inst.lightstate = "blue"
-    elseif item.prefab == "spidergland" then
+	elseif item.prefab == "spidergland" or item.prefab == "purplegem" then
 		inst.lightstate = "purple"
-    elseif item.prefab == "nightmarefuel" then
+	elseif item.prefab == "nightmarefuel" then
 		inst.lightstate = "black"
-    elseif item.prefab == "lightbulb" then
+	elseif item.prefab == "lightbulb" then
 		inst.lightstate = "white"
-    elseif item.prefab == "goldnugget" then
+	elseif item.prefab == "goldnugget" then
 		inst.lightstate = "default"
-    end
+	end
+
 	updateaura(inst)
     inst.SoundEmitter:PlaySound("dontstarve/common/fireAddFuel")
 end
@@ -289,6 +281,10 @@ local function fn(Sim)
     if not TheWorld.ismastersim then
         return inst
     end
+	
+	inst:AddComponent("container")
+	
+	inst.components.container:WidgetSetup("oneslotter")
     
     inst:AddComponent("fader")
     inst:WatchWorldState("iscavedusk", function() updatelight(inst) end)
@@ -302,10 +298,10 @@ local function fn(Sim)
     inst:AddComponent("inspectable")
     inst.components.inspectable.getstatus = GetStatus 
        
-    inst:AddComponent("trader")
+    --[[inst:AddComponent("trader")
     inst.components.trader:SetAcceptTest(ShouldAcceptItem)
     inst.components.trader.onaccept = OnGetItemFromPlayer
-    inst.components.trader.onrefuse = OnRefuseItem
+    inst.components.trader.onrefuse = OnRefuseItem]]
 
     inst:AddComponent("workable")
     inst.components.workable:SetWorkAction(ACTIONS.HAMMER)
@@ -318,6 +314,7 @@ local function fn(Sim)
     inst:AddComponent("sanityaura")
 
     inst:ListenForEvent("onbuilt", onbuilt)
+	inst:ListenForEvent("stacksizechange", OnLightChange)
 	--inst:ListenForEvent("onattackother", onAttackOther) //TODO: will trigger aura when player is attacked
         
     inst.OnSave = onsave
