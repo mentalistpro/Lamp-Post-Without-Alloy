@@ -3,22 +3,22 @@ local assets =
     Asset("ANIM", "anim/lamp_post2.zip"),
     Asset("ANIM", "anim/lamp_post2_city_build.zip"),    
     Asset("ANIM", "anim/lamp_post2_yotp_build.zip"),
-	Asset("ANIM", "anim/ui_chest_3x3.zip"),
+    Asset("ANIM", "anim/ui_chest_3x3.zip"),
 }
 
 local INTENSITY = 0.6
 
 --------------------------------------------------------------------------------------------------
 
---//CONTENT//
---1. Light fades
---2. Light effects
---3. Trades
---4. Miscellaneous
---5. Fn
+--[[CONTENT]]
+--#1 Light fades
+--#2 Light colours
+--#3 Lamp reacts to items
+--#4 Others
+--#5 fn()
 
 --------------------------------------------------------------------------------------------------
---1. Light fades
+--#1 Light fades
 
 local function fadein(inst)
     inst.components.fader:StopAll()
@@ -73,106 +73,106 @@ local function updatelight(inst)
 end
 
 -----------------------------------------------------------------------------------------------------------------
---2. Light effects
+--#2 Light colours
 
 local function updateaura(inst)
-	if inst.lightstate == "red" then
-		inst.Light:SetColour(.85,.35,.5)
-		inst.Light:SetIntensity(0.8)
-		inst.components.heater.heat = 30
-		inst.components.heater:SetThermics(true, false)
-	elseif inst.lightstate == "blue" then
-		inst.Light:SetColour(.4,1,1)
-		inst.Light:SetIntensity(0.8)
-		inst.components.heater.heat = -30
-		inst.components.heater:SetThermics(false, true)
-	else
-		inst.components.heater.heat = 0	
-	end
-	
-	--//TODO: aura functions have not been defined yet
-	if inst.lightstate == "orange" then
-		inst.Light:SetColour(1,.65,0)
-		--//It's about laziness
-		--AuraNoHungerCost
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
-		
-	elseif inst.lightstate == "green" then
-		inst.Light:SetColour(.5,1,0)
-		--//It's about perfection
-		--AuraNoHalthCost
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+    if inst.lightstate == "red" then
+        inst.Light:SetColour(.85,.35,.5)
+        inst.Light:SetIntensity(0.8)
+        inst.components.heater.heat = 30
+        inst.components.heater:SetThermics(true, false)
+    elseif inst.lightstate == "blue" then
+        inst.Light:SetColour(.4,1,1)
+        inst.Light:SetIntensity(0.8)
+        inst.components.heater.heat = -30
+        inst.components.heater:SetThermics(false, true)
+    else
+        inst.components.heater.heat = 0 
+    end
+    
+    --//TODO: aura functions have not been defined yet
+    if inst.lightstate == "orange" then
+        inst.Light:SetColour(1,.65,0)
+        --//It's about laziness
+        --AuraNoHungerCost
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+        
+    elseif inst.lightstate == "green" then
+        inst.Light:SetColour(.5,1,0)
+        --//It's about perfection
+        --AuraNoHalthCost
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
 
-	elseif inst.lightstate == "yellow" then
-		inst.Light:SetColour(1,1,0)
-		--//It's about heaven
-		--AuraHeal
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
-		
-	elseif inst.lightstate == "purple" then
-		inst.Light:SetColour(.9,.2,.8)
-		--//It's about chaos
-		--AuraAttackSummonsThunder
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = -TUNING.SANITYAURA_TINY
-	--//TODO: END
-	elseif inst.lightstate == "black" then
-		inst.Light:SetColour(.5,.5,.5)
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = 0
-		
-	elseif inst.lightstate == "white" then
-		inst.Light:SetColour(1,1,1)
-		inst.Light:SetIntensity(0.8)
-		inst.components.sanityaura.aura = 0	
-	
-	else
-		inst.Light:SetIntensity(0.6)
-		inst.components.sanityaura.aura = 0	
-	end
-	
-	if inst.lightstate == "default" then
-		inst.Light:SetColour(197/255, 197/255, 10/255)
-	end
-	
-	--when light is OFF, effects must be OFF
-	if TheWorld.state.isday and TUNING.CITYLAMP_LIGHT_ALWAYS_ON == 0 then
-		inst.components.heater.heat = 0	
-		inst.components.sanityaura.aura = 0
-	end
+    elseif inst.lightstate == "yellow" then
+        inst.Light:SetColour(1,1,0)
+        --//It's about heaven
+        --AuraHeal
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = TUNING.SANITYAURA_SMALL_TINY
+        
+    elseif inst.lightstate == "purple" then
+        inst.Light:SetColour(.9,.2,.8)
+        --//It's about chaos
+        --AuraAttackSummonsThunder
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = -TUNING.SANITYAURA_TINY
+    --//TODO: END
+    elseif inst.lightstate == "black" then
+        inst.Light:SetColour(.5,.5,.5)
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = 0
+        
+    elseif inst.lightstate == "white" then
+        inst.Light:SetColour(1,1,1)
+        inst.Light:SetIntensity(0.8)
+        inst.components.sanityaura.aura = 0 
+    
+    else
+        inst.Light:SetIntensity(0.6)
+        inst.components.sanityaura.aura = 0 
+    end
+    
+    if inst.lightstate == "default" then
+        inst.Light:SetColour(197/255, 197/255, 10/255)
+    end
+    
+    --when light is OFF, effects must be OFF
+    if TheWorld.state.isday and TUNING.CITYLAMP_LIGHT_ALWAYS_ON == 0 then
+        inst.components.heater.heat = 0 
+        inst.components.sanityaura.aura = 0
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------
---3. Container
+--#3 Lamp reacts to items
 
 --//TODO: Replace giver component with container component -- detect item change in container which triggers function or event pushed
 
 local function OnLightChange(inst, item)
-	local items = inst.components.container:GetItems()
-	if item.prefab == "red_cap" or item.prefab == "redgem" then
-		inst.lightstate = "red"
-	elseif item.prefab == "thulecite_pieces" or item.prefab == "orangegem" then
-		inst.lightstate = "orange"
-	elseif item.prefab == "honey" or item.prefab == "yellowgem" then
-		inst.lightstate = "yellow"
-	elseif item.prefab == "green_cap" or item.prefab == "greengem" then
-		inst.lightstate = "green"
-	elseif item.prefab == "blue_cap" or item.prefab == "bluegem" then
-		inst.lightstate = "blue"
-	elseif item.prefab == "spidergland" or item.prefab == "purplegem" then
-		inst.lightstate = "purple"
-	elseif item.prefab == "nightmarefuel" then
-		inst.lightstate = "black"
-	elseif item.prefab == "lightbulb" then
-		inst.lightstate = "white"
-	elseif item.prefab == "goldnugget" then
-		inst.lightstate = "default"
-	end
+    local items = inst.components.container:GetItems()
+    if item.prefab == "red_cap" or item.prefab == "redgem" then
+        inst.lightstate = "red"
+    elseif item.prefab == "thulecite_pieces" or item.prefab == "orangegem" then
+        inst.lightstate = "orange"
+    elseif item.prefab == "honey" or item.prefab == "yellowgem" then
+        inst.lightstate = "yellow"
+    elseif item.prefab == "green_cap" or item.prefab == "greengem" then
+        inst.lightstate = "green"
+    elseif item.prefab == "blue_cap" or item.prefab == "bluegem" then
+        inst.lightstate = "blue"
+    elseif item.prefab == "spidergland" or item.prefab == "purplegem" then
+        inst.lightstate = "purple"
+    elseif item.prefab == "nightmarefuel" then
+        inst.lightstate = "black"
+    elseif item.prefab == "lightbulb" then
+        inst.lightstate = "white"
+    elseif item.prefab == "goldnugget" then
+        inst.lightstate = "default"
+    end
 
-	updateaura(inst)
+    updateaura(inst)
     inst.SoundEmitter:PlaySound("dontstarve/common/fireAddFuel")
 end
 
@@ -182,7 +182,7 @@ local function OnRefuseItem(inst, item)
 end
 
 -----------------------------------------------------------------------------------------------------------------
---4. Miscellaneous
+--#4 Others
 
 local function GetStatus(inst)
     return not inst.lighton and "ON" or nil
@@ -228,15 +228,15 @@ local function onload(inst, data)
             inst.AnimState:Show("FIRE")
             inst.AnimState:Show("GLOW")        
             inst.lighton = true
-		end
-		
-		inst.lightstate = data.lightstate
-		updateaura(inst)
+        end
+        
+        inst.lightstate = data.lightstate
+        updateaura(inst)
     end
 end
 
 -----------------------------------------------------------------------------------------------------------------
---5. fn
+--#5 fn()
 
 local function fn(Sim)
     local inst = CreateEntity()
@@ -281,10 +281,10 @@ local function fn(Sim)
     if not TheWorld.ismastersim then
         return inst
     end
-	
-	inst:AddComponent("container")
-	
-	inst.components.container:WidgetSetup("oneslotter")
+    
+    inst:AddComponent("container")
+    
+    inst.components.container:WidgetSetup("oneslotter")
     
     inst:AddComponent("fader")
     inst:WatchWorldState("iscavedusk", function() updatelight(inst) end)
@@ -308,14 +308,14 @@ local function fn(Sim)
     inst.components.workable:SetWorkLeft(4)
     inst.components.workable:SetOnFinishCallback(onhammered)
     inst.components.workable:SetOnWorkCallback(onhit)  
-   	
+    
     inst:AddComponent("heater")
     inst:AddComponent("lootdropper")
     inst:AddComponent("sanityaura")
 
     inst:ListenForEvent("onbuilt", onbuilt)
-	inst:ListenForEvent("stacksizechange", OnLightChange)
-	--inst:ListenForEvent("onattackother", onAttackOther) //TODO: will trigger aura when player is attacked
+    inst:ListenForEvent("stacksizechange", OnLightChange)
+    --inst:ListenForEvent("onattackother", onAttackOther) //TODO: will trigger aura when player is attacked
         
     inst.OnSave = onsave
     inst.OnLoad = onload
