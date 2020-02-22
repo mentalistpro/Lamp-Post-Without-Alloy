@@ -1,7 +1,7 @@
 name 					= "Lamp Post without alloy"
-description 			= "Configurable Hamlet lamp post"
+description 			= "Configurable lamp post from Hamlet"
 author					= "Mentalistpro and CrazyCat"
-version 				= "1.3"
+version 				= "1.3.1"
 api_version 			= 10
 
 dst_compatible 			= true
@@ -16,7 +16,7 @@ configuration_options 	=
 {
 	{
 		name = "skin", 
-		label = "Lamp Appearance",
+		label = "Lamp Skin",
 		options = {
 					  {description = "Default", data = 0},
 					  {description = "Pig Fiesta", data = 1}
