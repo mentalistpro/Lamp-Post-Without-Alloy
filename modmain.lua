@@ -1,4 +1,3 @@
---List of prefabs and image assets in this mod. 
 PrefabFiles = 
 {
 	"city_lamp"
@@ -8,8 +7,6 @@ Assets =
 {
     Asset("ATLAS", "images/inventoryimages/city_lamp.xml")
 }
-
-AddMinimapAtlas("images/inventoryimages/city_lamp.xml")
 
 ------------------------------------------------------------------------------------
 
@@ -23,11 +20,11 @@ AddMinimapAtlas("images/inventoryimages/city_lamp.xml")
 
 if GetModConfigData("recipe") == 0 then
 	_Ingredient = Ingredient("goldnugget", 2) 
-elseif GetModConfigData("recipe") == 0 then
+elseif GetModConfigData("recipe") == 1 then
 	_Ingredient = Ingredient("goldnugget", 10)
-elseif GetModConfigData("recipe") == 0 then
+elseif GetModConfigData("recipe") == 2 then
 	_Ingredient = Ingredient("redgem", 1)
-elseif GetModConfigData("recipe") == 0 then
+elseif GetModConfigData("recipe") == 3 then
 	_Ingredient = Ingredient("alloy", 1)
 end
 
@@ -35,6 +32,8 @@ TUNING.CITYLAMP_LIGHT_ALWAYS_ON = GetModConfigData("ison")
 TUNING.CITYLAMP_LIGHT_RADIUS = GetModConfigData("radius")
 TUNING.CITYLAMP_MINIMAP = GetModConfigData("icon")
 TUNING.CITYLAMP_SKIN= GetModConfigData("skin")
+
+AddMinimapAtlas("images/inventoryimages/city_lamp.xml")
 
 AddPrefabPostInit("nightmarefuel", function(inst)
 	inst:AddComponent("tradable") -- so nightmare can be given to city_lamp
