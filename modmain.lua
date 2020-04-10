@@ -22,11 +22,40 @@ AddMinimapAtlas("images/inventoryimages/city_lamp.xml")
 TUNING.CITYLAMP_LIGHT_ALWAYS_ON = GetModConfigData("ison")
 TUNING.CITYLAMP_LIGHT_RADIUS = GetModConfigData("radius")
 TUNING.CITYLAMP_MINIMAP = GetModConfigData("icon")
-TUNING.CITYLAMP_SKIN= GetModConfigData("skin")
 
 AddPrefabPostInit("nightmarefuel", function(inst)
     inst:AddComponent("tradable") -- so nightmare can be given to city_lamp
 end)
+
+if GetModConfigData("recipe") == 0 then
+    _Ingredient = Ingredient("goldnugget", 2)
+elseif GetModConfigData("recipe") == 1 then
+    _Ingredient = Ingredient("goldnugget", 10)
+elseif GetModConfigData("recipe") == 2 then
+    _Ingredient = Ingredient("redgem", 1)
+elseif GetModConfigData("recipe") == 3 then
+    _Ingredient = Ingredient("alloy", 1)
+end
+
+if GetModConfigData("recipe") == 0 then
+    local _G = GLOBAL
+    local Ingredient = _G.Ingredient
+    local RECIPETABS = _G.RECIPETABS
+    local TECH = _G.TECH
+
+    AddRecipe(
+        "city_lamp",
+        {
+            _Ingredient,
+            Ingredient("transistor", 1),
+            Ingredient("lantern", 1)
+        },
+        RECIPETABS.LIGHT,
+        TECH.SCIENCE_TWO,
+        "city_lamp_placer",
+        nil, nil, nil, nil,
+        "images/inventoryimages/city_lamp.xml")
+end
 
 -----------------------------------------------------------------------------------------
 --#2 City_lamp
@@ -51,7 +80,7 @@ end
 
 local function fadeout(inst)
     inst.components.fader:StopAll()
-    inst.AnimState:PlayAnimation("off")    
+    inst.AnimState:PlayAnimation("off")
     inst.AnimState:PushAnimation("idle", true)
 
     if inst:IsAsleep() then

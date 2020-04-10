@@ -1,7 +1,7 @@
 name                    = " Tropical Experience Return of Them | Lamp Post without alloy"
 description             = "Configurable lamp post from Hamlet"
 author                  = "Mentalistpro and CrazyCat"
-version                 = "1.3.1"
+version                 = "1.3.1 [Build 003]"
 api_version             = 10
 
 dst_compatible          = true
@@ -14,6 +14,28 @@ icon                    = "modicon.tex"
 
 configuration_options   =
 {
+    {
+        name = "recipe",
+        label = "Unlock recipe",
+        options = {
+                      {description = "YES", data = 0},
+                      {description = "NO", data = 1},
+                  },
+        default = 0
+    },
+
+    {
+        name = "recipe",
+        label = "Recipe Difficulty",
+        options = {
+                      {description = "CHEAT!", data = 0},
+                      {description = "Default", data = 1},
+                      {description = "HARD!", data = 2},
+                      --{description = "Original", data = 3},
+                  },
+        default = 1
+    },
+
     {
         name = "radius",
         label = "Light Radius",
